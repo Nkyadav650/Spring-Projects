@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+<h1>My First Heading</h1>
+<p>My first paragraph.</p>
+<div>
+    <input type="file" name="file" id="file"/>
+    <button id="filebutton">Upload File</button>
+</div>
+
+<script>
+    document.getElementById("filebutton").addEventListener("click", function() {
+        var fileInput = document.getElementById("file");
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append("file", file);
+
+        fetch('http://your-backend-url/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response from server:', data);
+            // Handle response from server
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors
+        });
+    });
+</script>
+
+</body>
+</html>
