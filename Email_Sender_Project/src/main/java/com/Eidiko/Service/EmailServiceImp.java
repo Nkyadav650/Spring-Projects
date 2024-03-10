@@ -42,7 +42,6 @@ public class EmailServiceImp implements EmailService {
         	 JavaMailSender javaMailSender = mailConfiguration.getMailSender(emailRequest.getFrom());
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom("devil1432u@gmail.com");
             helper.setTo(emailRequest.getTo());
             helper.setSubject(emailRequest.getSubject());
 
