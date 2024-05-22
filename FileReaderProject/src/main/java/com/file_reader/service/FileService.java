@@ -1,5 +1,6 @@
 package com.file_reader.service;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface FileService {
 	public String saveFile(String file) throws FileNotFoundException;
 	public List<FileEntity> getAll();
 	public String  readPdfFile(MultipartFile file);
+	public String readTextFromImage(MultipartFile file);
+	public ByteArrayInputStream createPdf() throws Exception;
 }

@@ -1,24 +1,29 @@
 package com.file_reader.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.file_reader.entity.FileEntity;
 import com.file_reader.service.FileService;
 
-@Controller
+@RestController
 public class FileController {
 	
 	
@@ -62,8 +67,24 @@ public class FileController {
 		String text= fileService.readPdfFile(file);
 		return new ResponseEntity<>(text,HttpStatus.OK);
 	}
+	
+	@GetMapping("/readTextFromImage")
+	public ResponseEntity<String> readTextFromImage(@RequestParam ("file") MultipartFile file){
+		String text= fileService.readTextFromImage(file);
+		return new ResponseEntity<>(text,HttpStatus.OK);
+	}
+	
 	@RequestMapping("/input")
 	public String homePage() {
 		return "/home";
+	}
+	@GetMapping("/createPdf")
+	public ResponseEntity<InputStreamResource> createPdf() throws Exception{
+		ByteArrayInputStream createPdf = fileService.createPdf();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "attachment;file=product.pdf");
+		return  (ResponseEntity<InputStreamResource>) ResponseEntity.ok()
+				.headers(headers).contentType(MediaType.APPLICATION_PDF)
+				.body(new InputStreamResource(createPdf));
 	}
 }
